@@ -18,44 +18,37 @@ function getComputerChoice() {
 }
 
 
-function getHumanChoice() {
-    let userInput = prompt("Input your move!")
-    userInput = userInput.toLowerCase();
-    return userInput;
-}
+document.querySelector(".rock").addEventListener("click", () => playRound("rock", getComputerChoice()))
+document.querySelector(".paper").addEventListener("click", () => playRound("paper", getComputerChoice()))
+document.querySelector(".scissors").addEventListener("click", () => playRound("scissors", getComputerChoice()))
 
 
 
 function playRound(humanChoice, computerChoice) {
-    if (humanChoice != computerChoice) {
-        switch(humanChoice){
-            case "rock":
-                computerChoice == "paper" ? computerScore += 1 : humanScore +=1;
-                break;
-            case "paper":
-                computerChoice == "scissors" ? computerScore +=1 : humanScore +=1;
-                break;
-            case "scissors":
-                computerChoice == "rock" ? computerScore +=1 : humanScore +=1;
-                break;
-        }
-        return console.log(humanScore, computerScore)
+    let result = document.querySelector(".results")
+    if (humanChoice === computerChoice) {
+        let tie = document.createElement("div")
+        result.textContent = "TIE!"
+        return;
     }
-    else{
-        return console.log(humanScore, computerScore)
+    
+    const humanWins =
+    (humanChoice === "rock"     && computerChoice === "scissors") ||
+    (humanChoice === "paper"    && computerChoice === "rock")     ||
+    (humanChoice === "scissors" && computerChoice === "paper");
+    if (humanWins) {
+        humanScore+=1;
+        result.textContent = "WIN!"
     }
-}
-
-function playGame(){
-    let result;
-    for (let i = 0; i < 5; i++) { 
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        result = playRound(humanSelection, computerSelection);
+    else {
+        computerScore+=1;
+        let lose = document.createElement("div")
+        result.textContent = "LOSE!"
     }
-    return result
-
+    let scoreboard = document.querySelector(".scoreboard")
+    scoreboard.textContent = `HumanScore = ${humanScore}, ComputerScore = ${computerScore}`
 }
 
 
-console.log(playGame())
+
+
